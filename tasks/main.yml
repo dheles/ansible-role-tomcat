@@ -61,15 +61,31 @@
     state:  present
     create: yes
 
-- name: grant admin access to tomcat manager app
-  blockinfile:
-    dest: "{{ catalina_home }}/conf/tomcat-users.xml"
-    marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
-    insertbefore: "</tomcat-users>"
-    content: |
-        <role rolename="manager-gui" />
-        <user username="{{ tomcat_admin }}" password="{{ tomcat_admin_password }}" roles="manager-gui" />
+- name: set vars that follow from the value of tomcat_manager_access
+  set_fact:
+    access_state: "present"
   when: tomcat_manager_access
+- set_fact:
+    access_state: "absent"
+  when: not tomcat_manager_access
+
+- name: configure tomcat-users - roles
+  lineinfile:
+    dest: "{{ catalina_home }}/conf/tomcat-users.xml"
+    regexp: '^<role rolename="{{ item }}" />'
+    line: '<role rolename="{{ item }}" />'
+    insertbefore: '</tomcat-users>'
+    state: "{{ access_state }}"
+  with_items: "{{ tomcat_roles }}"
+
+- name: configure tomcat-users - users
+  lineinfile:
+    dest: "{{ catalina_home }}/conf/tomcat-users.xml"
+    regexp: '^<user username="{{ item.username }}"'
+    line: '<user username="{{ item.username }}" password="{{ item.password }}" roles="{{ item.roles }}" />'
+    insertbefore: '</tomcat-users>'
+    state: "{{ access_state }}"
+  with_items: "{{ tomcat_users }}"
 
 - name: configure tomcat service
   template:

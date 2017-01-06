@@ -12,12 +12,16 @@ tomcat_checksum_url:    "{{ tomcat_url }}.{{ tomcat_checksum_algo }}"
 tomcat_user:            "tomcat"
 catalina_home:          "{{ tomcat_install_dir }}/tomcat"
 java_home:              "/usr/lib/jvm/jre"
-tomcat_manager_access:  true
-tomcat_admin:           "admin"
-tomcat_admin_password:  "changeme"
 tomcat_reinstall:       false
 java_opts:              "-Djava.awt.headless=true -Dfile.encoding=UTF-8"
 catalina_opts:          "-server
                         -Xms256m
                         -Xmx512m
                         -XX:+UseParallelGC"
+tomcat_manager_access:  true
+tomcat_roles:
+  - "manager-gui"
+tomcat_users:
+  - username: "admin"
+    password: "changeme"
+    roles:    "manager-gui"
