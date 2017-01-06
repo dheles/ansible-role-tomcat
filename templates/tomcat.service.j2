@@ -8,9 +8,9 @@ User={{ tomcat_user }}
 Group={{ tomcat_user }}
 Environment=TOMCAT_USER={{ tomcat_user }}
 Environment=JAVA_HOME={{ java_home }}
-Environment='JAVA_OPTS=-Djava.awt.headless=true -Dfile.encoding=UTF-8'
+Environment='JAVA_OPTS={{ java_opts }}'
 Environment=CATALINA_HOME={{ catalina_home }}
-Environment='CATALINA_OPTS=-Xms1024m -Xmx1024m -XX:MaxPermSize=512m -server -XX:+UseParallelGC'
+Environment='CATALINA_OPTS={{ catalina_opts }}'
 Environment=CATALINA_PID={{ catalina_home }}/temp/tomcat.pid
 PIDFile={{ catalina_home }}/temp/tomcat.pid
 ExecStart={{ catalina_home }}/bin/startup.sh

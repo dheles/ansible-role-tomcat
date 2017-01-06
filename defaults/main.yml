@@ -16,3 +16,8 @@ tomcat_manager_access:  true
 tomcat_admin:           "admin"
 tomcat_admin_password:  "changeme"
 tomcat_reinstall:       false
+java_opts:              "-Djava.awt.headless=true -Dfile.encoding=UTF-8"
+catalina_opts:          "-server
+                        -Xms256m
+                        -Xmx512m
+                        -XX:+UseParallelGC"
