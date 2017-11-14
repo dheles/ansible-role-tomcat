@@ -25,9 +25,20 @@
   changed_when: false
   register: tomcat_status
 
+- name: add tomcat user group
+  group:
+    name:     "{{ tomcat_group }}"
+    gid:      "{{ tomcat_group_gid | default(omit) }}"
+    state: present
+  become: true
+
 - name: add tomcat user
   user:
-    name: "{{ tomcat_user }}"
+    name:     "{{ tomcat_user }}"
+    shell:    "/bin/bash"
+    uid:      "{{ tomcat_user_uid  | default(omit) }}"
+    group:    "{{ tomcat_group }}"
+    comment:  "{{ tomcat_user }} system account"
   become: true
 
 - name: get tomcat checksum
@@ -48,6 +59,7 @@
     dest:       "{{ tomcat_install_dir }}"
     remote_src: yes
     owner:      "{{ tomcat_user }}"
+    group:      "{{ tomcat_group }}"
   # when: got_tomcat.changed
   become: true
 
@@ -56,6 +68,7 @@
     src:    "{{ tomcat_install_dir }}/{{ tomcat_dir }}"
     dest:   "{{ catalina_home }}"
     owner:  "{{ tomcat_user }}"
+    group:  "{{ tomcat_group }}"
     state:  link
   become: true
 
