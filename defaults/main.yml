@@ -26,7 +26,13 @@ catalina_opts:                "-server
 tomcat_manager_access:        true
 tomcat_roles:
   - "manager-gui"
+  - "admin-gui"
 tomcat_users:
   - username: "admin"
     password: "changeme"
-    roles:    "manager-gui"
+    roles:    "manager-gui,admin-gui"
+tomcat_ip_whitelist:
+  - "{{ internal_ip_regex }}"
+tomcat_manager_configs:
+  - "webapps/manager/META-INF/context.xml"
+  - "webapps/host-manager/META-INF/context.xml"

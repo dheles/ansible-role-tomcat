@@ -88,6 +88,16 @@
     access_state: "absent"
   when: not tomcat_manager_access
 
+- name: whitlist ips for manager access
+  lineinfile:
+    dest: "{{ catalina_home }}/{{ item }}"
+    regexp: '^\s+allow='
+    line: "allow=\"{{ tomcat_ip_whitelist | join('|') }}\" />"
+    state: "{{ access_state }}"
+    backup: true
+  with_items: "{{ tomcat_manager_configs }}"
+  become: true
+
 - name: configure tomcat-users - roles
   lineinfile:
     dest: "{{ catalina_home }}/conf/tomcat-users.xml"
