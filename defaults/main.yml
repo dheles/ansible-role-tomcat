@@ -2,7 +2,7 @@
 tomcat_minimum_java_version:  1.7
 tomcat_major_version:         8
 tomcat_minor_version:         5
-tomcat_patch_version:         24
+tomcat_patch_version:         43
 tomcat_version:               "{{ tomcat_major_version }}.{{ tomcat_minor_version }}.{{ tomcat_patch_version }}"
 tomcat_install_dir:           "/usr/local"
 tomcat_download_dir:          "{{ ansible_env.HOME}}"
